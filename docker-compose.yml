@@ -1,0 +1,12 @@
+version: '3'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8000"
+    depends_on:
+      - Gestion_Etudiants
+      - Gestion_Cours
+      - Gestion_Professeurs
+      - Gestion_Classe
+      - Gestion_Emploi_Temps
