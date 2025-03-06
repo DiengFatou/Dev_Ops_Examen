@@ -3,14 +3,14 @@ pipeline {
     
     environment {
         DOCKER_IMAGE = 'laravel_app_image'
-        DOCKER_REGISTRY = 'your_docker_registry_url' // Remplacez par l'URL de votre registre Docker
-        REPO_URL = 'https://github.com/votre-compte/laravel-projet.git' // Remplacez par l'URL de votre repository
+        DOCKER_REGISTRY = 'your_docker_registry_url' 
+        REPO_URL = 'https://github.com/DiengFatou/Dev_Ops_Examen.git'
     }
-    
+
     stages {
         stage('Checkout') {
             steps {
-                // Récupération du code depuis Git
+                // Récupération du code depuis Git
                 git branch: 'main', url: "${REPO_URL}"
             }
         }
@@ -18,7 +18,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Installer les dépendances Laravel via Composer
+                    // Installer les dépendances Laravel via Composer
                     sh 'composer install'
                 }
             }
@@ -27,7 +27,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 script {
-                    // Exécuter les tests PHPUnit
+                    // Exécuter les tests PHPUnit
                     sh './vendor/bin/phpunit'
                 }
             }
@@ -55,10 +55,19 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 script {
-                    // Déployer l'image Docker sur l'environnement de staging
+                    // Déployer l'image Docker sur l'environnement de staging
                     sh 'docker run -d -p 8080:80 ${DOCKER_REGISTRY}/${DOCKER_IMAGE}'
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline réussie !'
+        }
+        failure {
+            echo 'La pipeline a échoué.'
         }
     }
 }
